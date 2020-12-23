@@ -79,6 +79,11 @@ fun transformSuspendFunctionToRuntimeFunctionType(suspendFunType: KotlinType, is
             null,
             suspendFunType.builtIns.nullableAnyType
     ).makeNullableAsSpecified(suspendFunType.isMarkedNullable)
+        .let { withoutAbbreviation ->
+            suspendFunType.getAbbreviation()
+                ?.let { withoutAbbreviation.withAbbreviation(it) }
+                ?: withoutAbbreviation
+        }
 }
 
 fun isContinuation(name: FqName?, isReleaseCoroutines: Boolean): Boolean {
